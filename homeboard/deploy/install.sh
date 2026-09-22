@@ -135,8 +135,19 @@ if [ ! -f "$DIR/config.json" ]; then
   else
     warn "Set your weather location later with:  node deploy/set-location.js"
   fi
+  if [ "$DRY" = 0 ] && [ -t 0 ]; then
+    echo "    Before the screen opens at login, Homeboard waits a bit for the Pi's desktop to finish settling"
+    echo "    (skipping this can leave the screen blank). 60 seconds is recommended for a Pi 3. A Pi 4 or 5 can"
+    echo "    often use less, but 60 is safe for any of them."
+    read -r -p "    Wait how many seconds? [default 60]: " DELAY_INPUT || DELAY_INPUT=""
+    case "$DELAY_INPUT" in ('' | *[!0-9]*) DELAY_INPUT=60 ;; esac
+    "$NODE_BIN" -e 'const fs=require("fs"),f=process.argv[1],c=JSON.parse(fs.readFileSync(f,"utf8"));c.display=c.display||{};c.display.startupDelaySeconds=Number(process.argv[2]);fs.writeFileSync(f,JSON.stringify(c,null,2)+"\n");' "$DIR/config.json" "$DELAY_INPUT"
+    ok "startup delay set to ${DELAY_INPUT}s"
+  else
+    warn "Startup delay left at the default (60s, recommended for a Pi 3). Change it in config.json (display.startupDelaySeconds) any time."
+  fi
 else
-  ok "config.json already exists (change the location any time with: node deploy/set-location.js)"
+  ok "config.json already exists (change the location any time with: node deploy/set-location.js, or the startup delay with: display.startupDelaySeconds in config.json)"
 fi
 
 say "Chromium and curl"

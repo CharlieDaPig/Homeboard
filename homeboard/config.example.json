@@ -13,7 +13,8 @@
     "backgroundIntervalSeconds": 600,
     "backgroundOrder": "shuffle",
     "backgroundDim": 0.1,
-    "lowPower": false
+    "lowPower": false,
+    "startupDelaySeconds": 60
   },
 
   "refresh": {

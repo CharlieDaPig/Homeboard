@@ -19,6 +19,7 @@ const DEFAULTS = {
     backgroundOrder: 'shuffle',
     backgroundDim: 0.1,
     lowPower: false,
+    startupDelaySeconds: 60, // how long kiosk.sh waits after login before opening the screen; see deploy/kiosk.sh
   },
   refresh: { calendarMinutes: 5, tasksMinutes: 2, weatherMinutes: 15 },
   calendar: { weeks: 5, weekStartsOn: 0, maxEventsPerDay: 4 },

@@ -8,6 +8,7 @@ flock -n 9 || exit 0
 
 PORT="$(cd "$DIR" && node -e 'try{console.log(require("./config.json").port||3000)}catch(e){console.log(3000)}' 2>/dev/null)"
 URL="${HOMEBOARD_URL:-http://localhost:${PORT:-3000}}"
+DELAY="$(cd "$DIR" && node -e 'try{console.log(require("./config.json").display.startupDelaySeconds||60)}catch(e){console.log(60)}' 2>/dev/null)"
 
 # The server starts in parallel at boot, so wait until it answers.
 until curl -sf "$URL/api/config" >/dev/null 2>&1; do sleep 1; done
@@ -16,7 +17,9 @@ until curl -sf "$URL/api/config" >/dev/null 2>&1; do sleep 1; done
 # (screen rotation, output setup) right after login. Launching the kiosk browser too early can leave it
 # showing a gray, never-repainted window even though opening Chromium by hand a bit later works fine.
 # A pause here (only on this first launch, not on crash-restarts below) gives the desktop time to catch up.
-sleep 60
+# The installer asks for this number (config.json: display.startupDelaySeconds); 60 is what a Pi 3 needs,
+# a Pi 4 or 5 can often get away with less.
+sleep "${DELAY:-60}"
 
 # X11 only: stop the screen sleeping. (On Wayland the installer uses raspi-config instead.)
 if command -v xset >/dev/null 2>&1 && [ -n "${DISPLAY:-}" ]; then

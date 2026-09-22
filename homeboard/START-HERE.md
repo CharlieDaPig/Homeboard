@@ -105,7 +105,7 @@ If Connect ever asks you to sign in again on the Pi, use its icon in the top bar
 
 ### What the installer asks
 
-If it asks for a password, type the Pi's login password (nothing shows while you type). When it asks for your city, type just the city name (for example `Fort Worth`), then pick the right match from the list and choose Fahrenheit or Celsius. You can press Enter to skip that and do it in the dashboard instead. The installer then sets up everything else by itself, which takes a few minutes. It ends with a message that begins **Done. What is left** and prints your dashboard address.
+If it asks for a password, type the Pi's login password (nothing shows while you type). When it asks for your city, type just the city name (for example `Fort Worth`), then pick the right match from the list and choose Fahrenheit or Celsius. You can press Enter to skip that and do it in the dashboard instead. It then asks how many seconds to wait after login before opening the screen — just press Enter to keep the default of 60, which is what a Pi 3 needs (a Pi 4 or 5 can often use less, but 60 is safe for any of them). The installer then sets up everything else by itself, which takes a few minutes. It ends with a message that begins **Done. What is left** and prints your dashboard address.
 
 Want to preview first without changing anything? Run `bash ~/homeboard/deploy/install.sh --dry-run`. You can run the installer again at any time; it is safe.
 
