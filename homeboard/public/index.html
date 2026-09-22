@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homeboard</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg" id="bgA"></div>
+  <div class="bg" id="bgB"></div>
+  <div class="shade"></div>
+  <div class="dim"></div>
+
+  <main id="app">
+    <header>
+      <div class="clock">
+        <div class="time" id="time"></div>
+        <div class="time-side"><span id="secs"></span><span id="ampm"></span></div>
+      </div>
+      <div class="date">
+        <div class="dow" id="dow"></div>
+        <div class="md" id="md"></div>
+      </div>
+    </header>
+
+    <section id="calendar" aria-label="Calendar">
+      <div class="dow-row" id="dowRow"></div>
+      <div class="grid" id="grid"></div>
+      <div class="notice" id="calNotice" hidden></div>
+    </section>
+
+    <section id="tasks" aria-label="Tasks">
+      <div class="section-title" id="tasksTitle">Tasks</div>
+      <div class="task-cols" id="taskCols"></div>
+      <div class="notice" id="taskNotice" hidden></div>
+    </section>
+
+    <section id="weather" aria-label="Weather">
+      <div class="now" id="now"></div>
+      <div class="forecast" id="forecast"></div>
+      <div class="notice" id="wxNotice" hidden></div>
+    </section>
+
+    <footer>
+      <span id="place"></span>
+      <span id="warn"></span>
+      <span>Weather data by Open-Meteo.com</span>
+    </footer>
+  </main>
+
+  <script src="icons.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

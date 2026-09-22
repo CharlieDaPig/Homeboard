@@ -1,0 +1,43 @@
+{
+  "host": "0.0.0.0",
+  "port": 3000,
+  "locale": "en-US",
+
+  "admin": { "enabled": true },
+
+  "backgrounds": { "folder": "backgrounds" },
+
+  "display": {
+    "timeFormat": "12h",
+    "showSeconds": true,
+    "backgroundIntervalSeconds": 600,
+    "backgroundOrder": "shuffle",
+    "backgroundDim": 0.1,
+    "lowPower": false
+  },
+
+  "refresh": {
+    "calendarMinutes": 5,
+    "tasksMinutes": 2,
+    "weatherMinutes": 15
+  },
+
+  "calendar": {
+    "weeks": 5,
+    "weekStartsOn": 0,
+    "maxEventsPerDay": 4
+  },
+
+  "tasks": {
+    "title": "Tasks",
+    "lists": [],
+    "maxItems": 14
+  },
+
+  "weather": {
+    "latitude": 32.7555,
+    "longitude": -97.3308,
+    "units": "imperial",
+    "label": "Fort Worth, TX"
+  }
+}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Homeboard admin</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div id="login" class="login" hidden></div>
+
+  <div id="app" hidden>
+    <header class="top">
+      <div class="brand"><span class="logo" aria-hidden="true"></span>Homeboard</div>
+      <div class="top-right">
+        <span id="pill" class="pill"></span>
+        <button id="logout" class="btn small ghost" type="button">Sign out</button>
+      </div>
+    </header>
+    <nav id="tabs" class="tabs" aria-label="Sections"></nav>
+    <main id="main"></main>
+  </div>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "homeboard",
+  "version": "1.4.0-hue",
+  "description": "A self-hosted DAKboard-style dashboard for a vertical monitor: a Google Calendar secret link, Todoist tasks and weather, with Hue plug and diyHue support. Zero dependencies.",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "mock": "MOCK=1 node server.js"
+  },
+  "engines": { "node": ">=18" }
+}
