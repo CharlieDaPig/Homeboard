@@ -197,6 +197,41 @@ You can also copy pictures straight into the folder on the Pi: the installer put
 
 The dashboard is meant for your home network only. Do not set up port forwarding on your router to reach it from the internet.
 
+### Turning off the Pi's status lights (optional)
+
+The red and green lights on the Pi itself can be distracting on a wall-mounted screen. This is a Pi setting, not a Homeboard one, but here is how (confirmed working on a Pi 3):
+
+1. Over `ssh`, or in a Terminal on the Pi, check the light names on your board:
+
+```
+ls /sys/class/leds/
+```
+
+Most Pis show **ACT** and **PWR**. If yours shows something else (like `led0` and `led1`), use those names instead in the steps below.
+
+2. Set up a small service that switches both lights off at every boot:
+
+```
+sudo tee /etc/systemd/system/led-off.service > /dev/null <<'EOF'
+[Unit]
+Description=Turn off Pi status LEDs
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'echo none > /sys/class/leds/ACT/trigger; echo none > /sys/class/leds/PWR/trigger'
+
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable --now led-off.service
+```
+
+3. Run `sudo reboot` and check both lights stay off.
+
+To turn the lights back on later: `sudo systemctl disable --now led-off.service`.
+
 ---
 
 ## Part 6: Optional: switch the monitor from the Hue app
