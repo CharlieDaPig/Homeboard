@@ -4,7 +4,7 @@ const fs = require('fs');
 const { state, broadcast } = require('./state');
 const screenCount = () => [...state.clients].filter((r) => !r.isPreview).length;
 const { getWeather } = require('./weather');
-const { systemInfo, setTimezone } = require('./system');
+const { systemInfo, setTimezone, rebootPi } = require('./system');
 const { ValidationError } = require('./settings');
 const { HueError } = require('./hue');
 const backgrounds = require('./backgrounds');
@@ -467,6 +467,16 @@ function createAdmin({ settings, auth, calendars, todoist, data, isLocal, power,
         json(res, 200, { ok: true });
         setTimeout(() => process.exit(0), 500); // systemd starts it again (Restart=always)
         return;
+      }
+      if (method === 'POST' && path === '/actions/reboot-pi') {
+        if (cfg().mock) return fail(res, 400, 'Not available in mock mode.');
+        try {
+          await rebootPi();
+        } catch (err) {
+          return fail(res, 400, err.message);
+        }
+        console.warn('Pi reboot requested from the dashboard.');
+        return json(res, 200, { ok: true });
       }
 
       // ---- time zone ----

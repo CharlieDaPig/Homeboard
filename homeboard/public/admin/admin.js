@@ -1071,6 +1071,12 @@
       setTimeout(wait, 2000);
     }
 
+    async function rebootPi(e) {
+      const ok = await run(e.currentTarget, () => api('POST', '/actions/reboot-pi'));
+      if (!ok) return;
+      toast('Rebooting the Pi. The screen will go dark for a minute or two, then Homeboard opens again on its own.');
+    }
+
     root.append(h('div', { class: 'stack' },
       h('div', { class: 'grid' },
         card('Device', null, kv([
@@ -1096,7 +1102,8 @@
       h('div', { class: 'grid' },
         card('Actions', null, h('div', { class: 'row' },
           btn('Reload screen', (e) => run(e.currentTarget, async () => toast((await api('POST', '/actions/reload')).screens ? 'Reloading the screen.' : 'No screen is connected right now (fine if the monitor is off).', 'good'))),
-          o.canRestart ? confirmButton('Restart server', 'Really restart?', () => restart({ currentTarget: null }), 'btn danger') : h('span', { class: 'muted small-text' }, 'Restart is available when Homeboard runs as a background service (the normal Pi install).'))),
+          o.canRestart ? confirmButton('Restart server', 'Really restart?', () => restart({ currentTarget: null }), 'btn danger') : h('span', { class: 'muted small-text' }, 'Restart is available when Homeboard runs as a background service (the normal Pi install).'),
+          confirmButton('Reboot Pi', 'Really reboot?', () => rebootPi({ currentTarget: null }), 'btn danger'))),
         card('Password (optional)', null, pwBox)),
       card('Recent server messages', 'Updates every few seconds.', logBox)));
 

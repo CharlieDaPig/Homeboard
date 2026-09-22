@@ -109,4 +109,16 @@ function setTimezone(tz) {
   });
 }
 
-module.exports = { systemInfo, currentTimezone, listTimezones, setTimezone };
+// Needs the sudoers rule the installer adds (NOPASSWD for exactly this command), so it can be pressed
+// from the dashboard without a terminal. The Pi shutting down ends this process too, so nothing here
+// needs to wait for or confirm that the reboot actually happened.
+function rebootPi() {
+  return new Promise((resolve, reject) => {
+    execFile('sudo', ['systemctl', 'reboot'], { timeout: 8000 }, (err, stdout, stderr) => {
+      if (err) return reject(new Error(stderr ? String(stderr).trim().split('\n')[0] : err.message));
+      resolve();
+    });
+  });
+}
+
+module.exports = { systemInfo, currentTimezone, listTimezones, setTimezone, rebootPi };

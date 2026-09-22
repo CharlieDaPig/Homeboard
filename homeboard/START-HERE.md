@@ -179,7 +179,7 @@ Open the dashboard address in any browser on your home network. Changes take eff
 - **Weather**: today's numbers and the 5-day forecast, **Refresh now**, and a search box to change your city.
 - **Screen power**: the monitor switches off at 10:00 PM and back on at 7:00 AM until you change it. Set your own on and off times (with different times for Saturday and Sunday if you like), turn the schedule off, or press **Turn off now** and **Turn on now**. You can also link a Philips Hue smart plug here (see below), or let the Hue app switch the monitor without a plug (Part 6).
 - **Settings**: 12 or 24-hour clock, weeks on the calendar, how many tasks show, how often each thing is checked, and a time zone box if the clock or "today" is ever wrong.
-- **System**: the Pi's temperature, memory, storage and power. If it reports **under-voltage**, your power supply is too weak, which can cause glitches. Here you can also restart the server, add an optional dashboard password, and read recent server messages.
+- **System**: the Pi's temperature, memory, storage and power. If it reports **under-voltage**, your power supply is too weak, which can cause glitches. Here you can also restart the server, reboot the whole Pi, add an optional dashboard password, and read recent server messages.
 
 ### Turning the monitor off at night
 

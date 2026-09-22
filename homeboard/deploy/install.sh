@@ -101,6 +101,7 @@ if [ "$UNINSTALL" = 1 ]; then
   remove_line "$LXDE_DIR/autostart"
   run rm -f "$XDG_FILE"
   [ -f /etc/sudoers.d/homeboard-timezone ] && run $SUDO rm -f /etc/sudoers.d/homeboard-timezone
+  [ -f /etc/sudoers.d/homeboard-reboot ] && run $SUDO rm -f /etc/sudoers.d/homeboard-reboot
   [ -L "$HOME/Desktop/Homeboard pictures" ] && run rm -f "$HOME/Desktop/Homeboard pictures"
   ok "Left your config.json, credentials.json, token.json and pictures in place."
   exit 0
@@ -279,6 +280,31 @@ if command -v timedatectl >/dev/null 2>&1; then
   fi
 else
   warn "timedatectl not found; the dashboard's time zone box will not work. Change it with:  sudo raspi-config"
+fi
+
+say "Letting the dashboard reboot the Pi"
+if command -v systemctl >/dev/null 2>&1; then
+  RBFILE=/etc/sudoers.d/homeboard-reboot
+  RBLINE="$USER_NAME ALL=(root) NOPASSWD: /usr/bin/systemctl reboot"
+  if [ -f "$RBFILE" ] && grep -qxF "$RBLINE" "$RBFILE" 2>/dev/null; then
+    ok "already set up"
+  elif [ "$DRY" = 1 ]; then
+    printf '    [dry-run] add to %s: %s\n' "$RBFILE" "$RBLINE"
+  else
+    tmp="$(mktemp)"
+    echo "$RBLINE" >"$tmp"
+    # Checked before install for the same reason as the time zone rule above: a broken sudoers file
+    # can lock everyone out of sudo.
+    if $SUDO visudo -c -f "$tmp" >/dev/null 2>&1; then
+      run $SUDO install -m 440 -o root -g root "$tmp" "$RBFILE"
+      ok "the dashboard's System tab can now reboot the Pi"
+    else
+      warn "Could not set this up safely; the dashboard's reboot button will not work. Reboot with:  sudo reboot"
+    fi
+    rm -f "$tmp"
+  fi
+else
+  warn "systemctl not found; the dashboard's reboot button will not work. Reboot with:  sudo reboot"
 fi
 
 # ---------------------------------------------------------------- wrap up
