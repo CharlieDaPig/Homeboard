@@ -8,7 +8,7 @@ The whole setup is four parts: prepare the Raspberry Pi, copy Homeboard onto it 
 
 You need:
 
-- A Raspberry Pi 4 or 5 (a Pi 3 works but is slower), its power supply, and a microSD card of 16 GB or more
+- A Raspberry Pi 3, 4 or 5, its power supply, and a microSD card of 16 GB or more (a Pi 3 runs Homeboard fine — it's what this guide's own dashboard has been running the whole time)
 - Your vertical monitor and the right HDMI cable (the Pi 4 and 5 use micro-HDMI). For the automatic power on and off, the monitor should support **HDMI-CEC**, which most TVs do and many computer monitors do not (see "Turning the monitor off at night" in Part 5).
 - A keyboard and mouse for the Pi, just for the first setup
 - A PC, Mac or phone on the same Wi-Fi network as the Pi (for Option C in Part 2, it can be on any network)
