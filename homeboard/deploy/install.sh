@@ -197,14 +197,17 @@ else
 fi
 
 say "Opening the dashboard full screen at login"
+# Launched via "bash $KIOSK" everywhere below, not "$KIOSK" directly, so this never depends on the
+# executable bit - a plain unzip (which cannot preserve that bit) is enough on its own, with nothing
+# left for an install to silently get wrong.
 chmod +x "$KIOSK" 2>/dev/null || true
 if [ -d /etc/xdg/labwc ] || [ -d "$LABWC_DIR" ] || command -v labwc >/dev/null 2>&1; then
   seed_from "$LABWC_DIR/autostart" /etc/xdg/labwc/autostart
-  append_once "$LABWC_DIR/autostart" "$KIOSK &"
+  append_once "$LABWC_DIR/autostart" "bash \"$KIOSK\" &"
 fi
 if [ -d /etc/xdg/lxsession/LXDE-pi ] || [ -d "$LXDE_DIR" ]; then
   seed_from "$LXDE_DIR/autostart" /etc/xdg/lxsession/LXDE-pi/autostart
-  append_once "$LXDE_DIR/autostart" "@$KIOSK"
+  append_once "$LXDE_DIR/autostart" "@bash \"$KIOSK\""
 fi
 # Generic fallback for other desktops. If several of these fire, the launcher only lets one run.
 if [ "$DRY" = 1 ]; then
@@ -215,7 +218,7 @@ else
 [Desktop Entry]
 Type=Application
 Name=Homeboard
-Exec=$KIOSK
+Exec=bash $KIOSK
 X-GNOME-Autostart-enabled=true
 DESKTOP
   ok "wrote $XDG_FILE"
