@@ -221,6 +221,44 @@ DESKTOP
   ok "wrote $XDG_FILE"
 fi
 
+say "Hiding the mouse cursor automatically (labwc desktops only)"
+if [ -d /etc/xdg/labwc ] || [ -d "$LABWC_DIR" ] || command -v labwc >/dev/null 2>&1; then
+  if ! command -v wtype >/dev/null 2>&1; then run $SUDO apt-get install -y wtype || warn "Could not install wtype. The cursor will stay visible until moved by hand."; fi
+  if command -v wtype >/dev/null 2>&1; then
+    RC="$LABWC_DIR/rc.xml"
+    if [ "$DRY" = 1 ]; then
+      printf '    [dry-run] add a cursor-hide keybind to %s\n' "$RC"
+    else
+      run mkdir -p "$LABWC_DIR"
+      KEYBIND='<keybind key="A-W-h"><action name="HideCursor"/><action name="WarpCursor" x="-1" y="-1"/></keybind>'
+      if [ ! -s "$RC" ]; then
+        cat >"$RC" <<XML
+<?xml version="1.0"?>
+<openbox_config xmlns="http://openbox.org/3.4/rc">
+  <keyboard>
+    $KEYBIND
+  </keyboard>
+</openbox_config>
+XML
+        ok "created $RC with a cursor-hide keybind"
+      elif grep -qF 'name="HideCursor"' "$RC"; then
+        ok "already set up"
+      elif grep -qF '</keyboard>' "$RC"; then
+        tmp="$(mktemp)"
+        awk -v kb="    $KEYBIND" '/<\/keyboard>/ && !done { print kb; done=1 } { print }' "$RC" >"$tmp"
+        cp "$tmp" "$RC"; rm -f "$tmp"
+        ok "added a cursor-hide keybind to $RC"
+      elif grep -qE '<openbox_config[^>]*/>' "$RC"; then
+        # Raspberry Pi OS's default rc.xml: a self-closing root element with nothing in it.
+        sed -i -E "s#(<openbox_config[^>]*)/>#\1><keyboard>$KEYBIND</keyboard></openbox_config>#" "$RC"
+        ok "expanded $RC and added a cursor-hide keybind"
+      else
+        warn "$RC has a shape I don't recognise; left it alone so nothing gets overwritten. The cursor will stay visible until moved by hand."
+      fi
+    fi
+  fi
+fi
+
 say "Shortcut to the pictures folder on the Pi's desktop"
 BG_DIR="$("$NODE_BIN" -e 'const c=require(process.argv[1]+"/lib/config"),b=require(process.argv[1]+"/lib/backgrounds");console.log(b.resolveFolder(c.loadConfig().backgrounds.folder))' "$DIR" 2>/dev/null || echo "$DIR/backgrounds")"
 SHORTCUT="$HOME/Desktop/Homeboard pictures"

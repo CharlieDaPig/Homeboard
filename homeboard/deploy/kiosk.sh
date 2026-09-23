@@ -29,6 +29,13 @@ fi
 BROWSER="$(command -v chromium-browser || command -v chromium)"
 if [ -z "$BROWSER" ]; then echo "Chromium is not installed." >&2; exit 1; fi
 
+# A mouse cursor left untouched since boot can sit visible on screen (e.g. over the clock) until moved at
+# least once - Chromium only hides it via CSS once it sees real pointer activity. The installer sets up a
+# labwc keybind (rc.xml) that hides and parks the cursor off-screen; this fires it once, a few seconds
+# after Chromium opens, so nobody has to touch the mouse for it to disappear. Does nothing if wtype (or the
+# keybind) is not set up, e.g. on a non-labwc desktop.
+command -v wtype >/dev/null 2>&1 && (sleep 5 && wtype -M alt -M logo -P h >/dev/null 2>&1) &
+
 # If the screen stays gray, this is what Chromium itself printed. Kept only for this login (cleared on reboot).
 LOG="${XDG_RUNTIME_DIR:-/tmp}/homeboard-kiosk.log"
 : >"$LOG"
